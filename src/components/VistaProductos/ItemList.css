@@ -1,0 +1,40 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css");
+
+#contenedorItems{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+}
+
+#contenedorItems div{
+    margin: 10px;
+}
+
+.linkAdetail{
+    text-decoration: none;
+}
+
+#btnBorrarItem, #btnModificarItem{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#btnBorrarItem > i, #btnModificarItem > i{
+    font-size: 20px;
+}
+
+#btnBorrarItem{
+    top: 0px;
+    right: 0px;
+    color: red;
+}
+
+#btnModificarItem{
+    top: 35px;
+    right: 0px;
+    color: white;
+}
