@@ -1,10 +1,10 @@
 import { useContext } from "react"
 import ItemList from "./ItemList"
-import { tipoUsuario } from "../contexto/contexto"
+import { myContext } from "../contexto/contexto"
 
 const ItemListContainer = () => {
     
-    const contexto = useContext(tipoUsuario)
+    const contexto = useContext(myContext)
 
     return (
         <ItemList items={contexto.productos} />

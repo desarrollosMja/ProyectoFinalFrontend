@@ -1,0 +1,25 @@
+.btn{
+    margin: 10px;
+}
+
+.bi-trash{
+    color: red;
+    cursor: pointer;
+}
+
+.bi-bag-plus{
+    color: green;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.carrito{
+    margin: 10px;
+}
+
+#formularioBusquedaCarrito{
+    margin: 20px 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}

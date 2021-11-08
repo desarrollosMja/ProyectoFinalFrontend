@@ -6,7 +6,8 @@ import Offcanvas from 'react-bootstrap/Offcanvas'
 import Form from 'react-bootstrap/Form'
 import { NavLink } from "react-router-dom"
 import { useContext, useState } from "react"
-import { tipoUsuario } from "../contexto/contexto"
+import { myContext } from "../contexto/contexto"
+import axios from "axios"
 
 const Item = (props) => {
 
@@ -17,7 +18,8 @@ const Item = (props) => {
     const { id, nombre, descripcion, codigo, urlFoto, precio, stock } = props.item
     const URL = `http://localhost:8080/api/productos/${id}`
 
-    const contexto = useContext(tipoUsuario)
+    const contexto = useContext(myContext)
+    const administrador = contexto.administrador
 
     const renderTooltipDelete = (props) => (
         <Tooltip id="button-tooltip" {...props}>
@@ -32,9 +34,34 @@ const Item = (props) => {
     );
 
     const borrarItem = () => {
-        fetch(`http://localhost:8080/api/productos/${id}`, { method: 'DELETE' })
+        fetch(`http://localhost:8080/api/productos/${id}`, { 
+            method: 'DELETE', 
+            headers: {'Content-Type': 'application/json'}, 
+            body: JSON.stringify({administrador})
+        })
             .then(res => res.json())
             .then(json => contexto.setProductos(json.productos))
+            .catch(err => console.log(err))
+    }
+
+    const modificarDatos = (e) => {
+        e.preventDefault()
+        const datos = {
+            id: id,
+            nombre: e.target.nombre.value,
+            descripcion: e.target.descripcion.value,
+            codigo: e.target.codigo.value,
+            urlFoto: e.target.urlFoto.value,
+            precio: e.target.precio.value,
+            stock: e.target.stock.value,
+            administrador: administrador
+        }
+
+        axios.put(URL, datos)
+            .then(res => {
+                contexto.setProductos(res.data)
+                handleClose()
+            })
             .catch(err => console.log(err))
     }
 
@@ -47,7 +74,7 @@ const Item = (props) => {
                         <Card.Title><NavLink to={`/producto/${id}`} className="linkAdetail">{nombre}</NavLink></Card.Title>
                         <Card.Subtitle>Precio: $ {precio}</Card.Subtitle>
                         <Card.Subtitle>Stock: {stock}</Card.Subtitle>
-                        <Button variant="dark">Agregar al carrito</Button>
+                        <Button variant="dark" onClick={() => contexto.addItem(props.item)}>Agregar al carrito</Button>
                     </Card.Body>
 
                     <OverlayTrigger
@@ -71,39 +98,38 @@ const Item = (props) => {
                     <Offcanvas.Title>Modificar artículo</Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
-                    <Form method="post" action="http://localhost:8080/api/productos/5?_method=PUT">
-                    <input type="hidden" name="_method" value="PUT"/>
+                    <Form onSubmit={(e) => modificarDatos(e)}>
                             <Form.Group className="mb-3" controlId="formBasicText">
                                 <Form.Label>Nombre</Form.Label>
-                                <Form.Control type="text" value={nombre} />
+                                <Form.Control type="text" placeholder={nombre} name="nombre" />
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formBasicText">
                                 <Form.Label>Descripción</Form.Label>
-                                <Form.Control type="text" value={descripcion} />
+                                <Form.Control type="text" placeholder={descripcion} name="descripcion" />
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formBasicText">
                                 <Form.Label>URL foto</Form.Label>
-                                <Form.Control type="text" value={urlFoto} />
+                                <Form.Control type="text" placeholder={urlFoto} name="urlFoto" />
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formBasicNumber">
                                 <Form.Label>Código</Form.Label>
-                                <Form.Control type="text" value={codigo} />
+                                <Form.Control type="text" placeholder={codigo} name="codigo" />
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formBasicNumber">
                                 <Form.Label>Precio $</Form.Label>
-                                <Form.Control type="text" value={precio} />
+                                <Form.Control type="text" placeholder={precio} name="precio" />
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formBasicNumber">
                                 <Form.Label>Stock</Form.Label>
-                                <Form.Control type="text" value={stock} />
+                                <Form.Control type="text" placeholder={stock} name="stock" />
                             </Form.Group>
 
-                            <Button variant="primary" type="submit">
+                            <Button variant="primary" type="submit" >
                                 Guardar
                             </Button>
                         </Form>
@@ -119,7 +145,7 @@ const Item = (props) => {
                     <Card.Title><NavLink to={`/producto/${id}`} className="linkAdetail">{nombre}</NavLink></Card.Title>
                     <Card.Subtitle>Precio: $ {precio}</Card.Subtitle>
                     <Card.Subtitle>Stock: {stock}</Card.Subtitle>
-                    <Button variant="dark">Agregar al carrito</Button>
+                    <Button variant="dark" onClick={() => contexto.addItem(props.item)}>Agregar al carrito</Button>
                 </Card.Body>
             </Card>
         )

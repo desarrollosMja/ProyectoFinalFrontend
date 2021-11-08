@@ -1,6 +1,6 @@
 import { useState, useContext } from "react"
 import { useHistory } from "react-router"
-import { tipoUsuario } from "../contexto/contexto"
+import { myContext } from "../contexto/contexto"
 import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
@@ -11,7 +11,7 @@ export default function SeleccionUsuario(){
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    let contextoAdministrador = useContext(tipoUsuario)
+    let contextoAdministrador = useContext(myContext)
 
     let history = useHistory()
 

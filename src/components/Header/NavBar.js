@@ -4,12 +4,12 @@ import Nav from "react-bootstrap/Nav"
 import { NavLink } from "react-router-dom"
 import "./NavBar.css"
 import { useContext, useEffect } from "react"
-import { tipoUsuario } from "../contexto/contexto"
+import { myContext } from "../contexto/contexto"
 
 const NavBar = () => {
 
     let usuario
-    const contextoAdministrador = useContext(tipoUsuario)
+    const contextoAdministrador = useContext(myContext)
     contextoAdministrador.administrador == true ? usuario = "Administrador" : usuario = "Cliente"
 
     if (contextoAdministrador.administrador == true){

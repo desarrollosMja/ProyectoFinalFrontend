@@ -1,3 +1,5 @@
+import { useContext } from "react"
+import { myContext } from "../contexto/contexto"
 import Card from "react-bootstrap/Card"
 import Button from "react-bootstrap/Button"
 import "./ItemDetail.css"
@@ -5,6 +7,8 @@ import "./ItemDetail.css"
 const ItemDetail = (props) => {
 
     const {id, nombre, descripcion, codigo, urlFoto, precio, stock} = props.item
+
+    const contexto = useContext(myContext)
 
     return (
         <Card>
@@ -16,7 +20,7 @@ const ItemDetail = (props) => {
                     {descripcion}
                 </Card.Text>
                 <Card.Subtitle>Stock: {stock}</Card.Subtitle>
-                <Button variant="dark">Agregar al carrito</Button>
+                <Button variant="dark" onClick={() => contexto.addItem(props.item)}>Agregar al carrito</Button>
             </Card.Body>
         </Card>
     )

@@ -1,11 +1,17 @@
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import "./cargaProductos.css"
+import { useContext } from "react"
+import { myContext } from "../contexto/contexto"
 
 const CargaProductos = () => {
 
+    const contexto = useContext(myContext)
+
+    const URL = `http://localhost:8080/api/productos`
+
     return (
-        <Form method="post" action="http://localhost:8080/api/productos">
+        <Form method="post" action={URL}>
             <Form.Group className="mb-3" controlId="formBasicText">
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control type="text" placeholder="Ingrese el nombre del producto" name="nombre" />
@@ -35,6 +41,15 @@ const CargaProductos = () => {
                 <Form.Label>Stock</Form.Label>
                 <Form.Control type="number" placeholder="Stock" name="stock" />
             </Form.Group>
+
+            <Form.Check
+                block
+                defaultChecked
+                label="Administrador"
+                type="radio"
+                name="administrador"
+                value={contexto.administrador}
+            />
 
             <Button variant="primary" type="submit">
                 Cargar
