@@ -10,7 +10,17 @@ import Form from "react-bootstrap/Form"
 
 const Carrito = () => {
 
-    const {carrito, setCarrito, idCarrito, setIdCarrito, removeItem, clearCart} = useContext(myContext)
+    let {
+        carrito, 
+        setCarrito, 
+        idCarrito, 
+        setIdCarrito, 
+        removeItem, 
+        clearCart, 
+        totalAgregado, 
+        setTotalAgregado
+    } = useContext(myContext)
+
     const history = useHistory()
     const [open, setOpen] = useState(false);
 
@@ -66,10 +76,11 @@ const Carrito = () => {
         )
     } else {
         return (
-            <>
+            <div className="contenedorFlex">
                 <Table >
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Nombre</th>
                             <th>Precio</th>
                             <th>Cantidad a comprar</th>
@@ -79,6 +90,7 @@ const Carrito = () => {
                     <tbody>
                         {carrito.map(producto =>
                             <tr key={producto.item.id}>
+                                <td><img src={producto.item.urlFoto}></img></td>
                                 <td>{producto.item.nombre}</td>
                                 <td>{producto.item.precio}</td>
                                 <td>{producto.item.addedToCart}</td>
@@ -109,6 +121,7 @@ const Carrito = () => {
                                         overlay={renderTooltipAdd}
                                     >
                                         <i class="bi bi-bag-plus" onClick={() => {
+                                            setTotalAgregado(++totalAgregado)
                                             producto.item.addedToCart++
                                             fetch(`http://localhost:8080/api/carrito/${idCarrito}/${producto.item.id}`, {
                                                 method: "post", 
@@ -123,13 +136,16 @@ const Carrito = () => {
                         )}                  
                     </tbody>
                 </Table>
-                <Button variant="success" className="btn">Finalizar compra</Button>
-                <Button variant="danger" className="btn" onClick={() => {
-                    clearCart()
-                }}>
-                    Vaciar carrito
-                </Button>            
-            </>
+                <div id="contenedorFinalizarCompra">
+                    <h5>TOTAL: $ {carrito.reduce((acc, item) => acc + item.item.precio * item.item.addedToCart, 0)}</h5>
+                    <Button variant="success" className="btn-finalizar">Finalizar compra</Button>
+                    <Button variant="danger" className="btn-vaciar" onClick={() => {
+                        clearCart()
+                    }}>
+                        Vaciar carrito
+                    </Button>
+                </div>            
+            </div>
         )
     }
 }

@@ -8,6 +8,7 @@ export const MyContextProvider = ({ children }) => {
     const [administrador, setAdministrador] = useState(true)
     let [productos, setProductos] = useState([])
     let [carrito, setCarrito] = useState([])
+    let [totalAgregado, setTotalAgregado] = useState(0)
     let [idCarrito, setIdCarrito] = useState()
 
     let arrayAuxiliar = []
@@ -23,6 +24,7 @@ export const MyContextProvider = ({ children }) => {
                         headers: {'Content-Type': 'application/json'}, 
                         body: JSON.stringify({item: producto.item})
                     })
+                    setTotalAgregado(++totalAgregado)
                     return
                 }
             }
@@ -31,6 +33,7 @@ export const MyContextProvider = ({ children }) => {
             item.addedToCart = 1
             arrayAuxiliar.push({item})
             setCarrito(arrayAuxiliar)
+            setTotalAgregado(++totalAgregado)
         }
 
         if (idCarrito == undefined) {
@@ -50,6 +53,7 @@ export const MyContextProvider = ({ children }) => {
         arrayAuxiliar = carrito
         arrayAuxiliar.forEach((elemento, indice, array) => {
             if (elemento.item.id == itemId) {
+                setTotalAgregado(totalAgregado - elemento.item.addedToCart)
                 arrayAuxiliar.splice(indice,1)
             }
         })
@@ -57,6 +61,7 @@ export const MyContextProvider = ({ children }) => {
     }
 
     const clearCart = async () => {
+        setTotalAgregado(0)
         setIdCarrito(undefined)
         setCarrito([])
         await fetch(`http://localhost:8080/api/carrito/${idCarrito}`, {
@@ -82,7 +87,9 @@ export const MyContextProvider = ({ children }) => {
         removeItem: removeItem,
         clearCart: clearCart,
         idCarrito: idCarrito,
-        setIdCarrito: setIdCarrito
+        setIdCarrito: setIdCarrito,
+        totalAgregado: totalAgregado,
+        setTotalAgregado: setTotalAgregado
     }
 
     useEffect(() => {
