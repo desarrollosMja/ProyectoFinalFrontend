@@ -15,8 +15,8 @@ const Item = (props) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const { id, nombre, descripcion, codigo, urlFoto, precio, stock } = props.item
-    const URL = `http://localhost:8080/api/productos/${id}`
+    const { _id, nombre, descripcion, codigo, urlFoto, precio, stock } = props.item
+    const URL = `http://localhost:8080/api/productos/${_id}`
 
     const contexto = useContext(myContext)
     const administrador = contexto.administrador
@@ -34,7 +34,7 @@ const Item = (props) => {
     );
 
     const borrarItem = () => {
-        fetch(`http://localhost:8080/api/productos/${id}`, { 
+        fetch(`http://localhost:8080/api/productos/${_id}`, { 
             method: 'DELETE', 
             headers: {'Content-Type': 'application/json'}, 
             body: JSON.stringify({administrador})
@@ -47,7 +47,7 @@ const Item = (props) => {
     const modificarDatos = (e) => {
         e.preventDefault()
         const datos = {
-            id: id,
+            _id: _id,
             nombre: e.target.nombre.value,
             descripcion: e.target.descripcion.value,
             codigo: e.target.codigo.value,
@@ -59,7 +59,9 @@ const Item = (props) => {
 
         axios.put(URL, datos)
             .then(res => {
-                contexto.setProductos(res.data)
+                const {data} = res
+                console.log(data)
+                contexto.setProductos(data)
                 handleClose()
             })
             .catch(err => console.log(err))
@@ -71,7 +73,7 @@ const Item = (props) => {
                 <Card style={{ width: '18rem' }}>
                     <Card.Img variant="top" src={urlFoto} />
                     <Card.Body>
-                        <Card.Title><NavLink to={`/producto/${id}`} className="linkAdetail">{nombre}</NavLink></Card.Title>
+                        <Card.Title><NavLink to={`/producto/${_id}`} className="linkAdetail">{nombre}</NavLink></Card.Title>
                         <Card.Subtitle>Precio: $ {precio}</Card.Subtitle>
                         <Card.Subtitle>Stock: {stock}</Card.Subtitle>
                         <Button variant="dark" onClick={() => contexto.addItem(props.item)}>Agregar al carrito</Button>
@@ -142,7 +144,7 @@ const Item = (props) => {
             <Card style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={urlFoto} />
                 <Card.Body>
-                    <Card.Title><NavLink to={`/producto/${id}`} className="linkAdetail">{nombre}</NavLink></Card.Title>
+                    <Card.Title><NavLink to={`/producto/${_id}`} className="linkAdetail">{nombre}</NavLink></Card.Title>
                     <Card.Subtitle>Precio: $ {precio}</Card.Subtitle>
                     <Card.Subtitle>Stock: {stock}</Card.Subtitle>
                     <Button variant="dark" onClick={() => contexto.addItem(props.item)}>Agregar al carrito</Button>

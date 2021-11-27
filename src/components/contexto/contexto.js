@@ -12,7 +12,6 @@ export const MyContextProvider = ({ children }) => {
     let [idCarrito, setIdCarrito] = useState()
 
     let arrayAuxiliar = []
-    console.log(idCarrito)
 
     const addItem = item => {
         if (isInCart(item.id)){

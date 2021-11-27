@@ -11,7 +11,7 @@ const ItemDetailContainer = () => {
     useEffect(() => {
         fetch(`http://localhost:8080/api/productos/${parametros.id}`)
             .then(res => res.json())
-            .then(json => setProducto(json[0]))
+            .then(json => setProducto(json))
             .catch(err => console.log(err))
     },[parametros])
 
