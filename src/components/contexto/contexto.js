@@ -14,14 +14,15 @@ export const MyContextProvider = ({ children }) => {
     let arrayAuxiliar = []
 
     const addItem = item => {
-        if (isInCart(item.id)){
+        if (isInCart(item._id)){
             for (const producto of carrito) {
-                if (producto.item.id == item.id) {
+                if (producto.item._id == item._id) {
                     producto.item.addedToCart++
-                    fetch(`http://localhost:8080/api/carrito/${idCarrito}/${producto.item.id}`, {
+                    const itemAux = producto.item
+                    fetch(`http://localhost:8080/api/carrito/${idCarrito}/${producto.item._id}`, {
                         method: "post", 
                         headers: {'Content-Type': 'application/json'}, 
-                        body: JSON.stringify({item: producto.item})
+                        body: JSON.stringify({itemAux})
                     })
                     setTotalAgregado(++totalAgregado)
                     return
@@ -38,12 +39,10 @@ export const MyContextProvider = ({ children }) => {
         if (idCarrito == undefined) {
             fetch("http://localhost:8080/api/carrito", {method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify({item})})
                 .then(res => res.json())
-                .then(json => {
-                    setIdCarrito(json.idCarrito)
-                    console.log(json)
-                })
+                .then(json => setIdCarrito(json.idCarrito))
                 .catch(err => console.log(err))
         } else{
+            console.log(item)
             fetch(`http://localhost:8080/api/carrito/${idCarrito}/productos`, {method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify({item})})
         }
     }
@@ -51,7 +50,7 @@ export const MyContextProvider = ({ children }) => {
     const removeItem = itemId => {
         arrayAuxiliar = carrito
         arrayAuxiliar.forEach((elemento, indice, array) => {
-            if (elemento.item.id == itemId) {
+            if (elemento.item._id == itemId) {
                 setTotalAgregado(totalAgregado - elemento.item.addedToCart)
                 arrayAuxiliar.splice(indice,1)
             }
@@ -71,7 +70,7 @@ export const MyContextProvider = ({ children }) => {
     }
 
     const isInCart = itemId => {
-        if (carrito.find(elemento => elemento.item.id == itemId)) return true;
+        if (carrito.find(elemento => elemento.item._id == itemId)) return true;
         else return false
     }
 

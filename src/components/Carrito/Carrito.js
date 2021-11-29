@@ -57,10 +57,16 @@ const Carrito = () => {
                     fetch(`http://localhost:8080/api/carrito/${id}/productos`)
                     .then(response => response.json())
                     .then(json => {
+                        console.log(json)
                         let data = []
-                        for (const item of json.items) {
+                        for (const item of json.item) {
                             data.push({item: item})
                         }
+                        let cantidadAgregadaAlCarrito = 0
+                        data.forEach(elem => {
+                            cantidadAgregadaAlCarrito += elem.item.addedToCart
+                        })
+                        setTotalAgregado(parseInt(cantidadAgregadaAlCarrito))
                         setIdCarrito(id)
                         setCarrito(data)
                     })
@@ -101,9 +107,9 @@ const Carrito = () => {
                                         overlay={renderTooltipDelete}
                                     >
                                        <i class="bi bi-trash" onClick={() => {
-                                            removeItem(producto.item.id)
+                                            removeItem(producto.item._id)
                                             if (carrito.length > 0){
-                                                fetch(`http://localhost:8080/api/carrito/${idCarrito}/productos/${producto.item.id}`, {
+                                                fetch(`http://localhost:8080/api/carrito/${idCarrito}/productos/${producto.item._id}`, {
                                                     method: "delete", 
                                                     headers: {'Content-Type': 'application/json'}, 
                                                     body: JSON.stringify({item: producto.item})
@@ -123,7 +129,7 @@ const Carrito = () => {
                                         <i class="bi bi-bag-plus" onClick={() => {
                                             setTotalAgregado(++totalAgregado)
                                             producto.item.addedToCart++
-                                            fetch(`http://localhost:8080/api/carrito/${idCarrito}/${producto.item.id}`, {
+                                            fetch(`http://localhost:8080/api/carrito/${idCarrito}/${producto.item._id}`, {
                                                 method: "post", 
                                                 headers: {'Content-Type': 'application/json'}, 
                                                 body: JSON.stringify({item: producto.item})

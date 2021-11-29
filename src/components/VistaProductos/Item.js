@@ -40,7 +40,7 @@ const Item = (props) => {
             body: JSON.stringify({administrador})
         })
             .then(res => res.json())
-            .then(json => contexto.setProductos(json.productos))
+            .then(json => contexto.setProductos(json))
             .catch(err => console.log(err))
     }
 
@@ -60,7 +60,6 @@ const Item = (props) => {
         axios.put(URL, datos)
             .then(res => {
                 const {data} = res
-                console.log(data)
                 contexto.setProductos(data)
                 handleClose()
             })
