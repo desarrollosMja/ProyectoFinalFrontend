@@ -106,7 +106,7 @@ const Carrito = () => {
                                         delay={{ show: 250, hide: 400 }}
                                         overlay={renderTooltipDelete}
                                     >
-                                       <i class="bi bi-trash" onClick={() => {
+                                    <i class="bi bi-trash" onClick={() => {
                                             removeItem(producto.item._id)
                                             if (carrito.length > 0){
                                                 fetch(`http://localhost:8080/api/carrito/${idCarrito}/productos/${producto.item._id}`, {
@@ -150,6 +150,8 @@ const Carrito = () => {
                     }}>
                         Vaciar carrito
                     </Button>
+                    <h6>Código carrito</h6>
+                    <strong>{idCarrito}</strong>
                 </div>            
             </div>
         )

@@ -63,6 +63,10 @@ td{
     justify-content: center;
 }
 
-#contenedorFinalizarCompra > h5{
+#contenedorFinalizarCompra > h5, h6, strong{
     text-align: center;
+}
+
+#contenedorFinalizarCompra > h6{
+    margin-top: 10px;
 }
