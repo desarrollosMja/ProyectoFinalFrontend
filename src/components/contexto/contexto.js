@@ -10,6 +10,8 @@ export const MyContextProvider = ({ children }) => {
     let [carrito, setCarrito] = useState([])
     let [totalAgregado, setTotalAgregado] = useState(0)
     let [idCarrito, setIdCarrito] = useState()
+    let [usuario, setUsuario] = useState()
+    let [fileName, setFileName] = useState()
 
     let arrayAuxiliar = []
 
@@ -87,7 +89,11 @@ export const MyContextProvider = ({ children }) => {
         idCarrito: idCarrito,
         setIdCarrito: setIdCarrito,
         totalAgregado: totalAgregado,
-        setTotalAgregado: setTotalAgregado
+        setTotalAgregado: setTotalAgregado,
+        usuario: usuario,
+        setUsuario: setUsuario,
+        fileName: fileName,
+        setFileName: setFileName
     }
 
     useEffect(() => {

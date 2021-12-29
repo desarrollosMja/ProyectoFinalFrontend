@@ -9,15 +9,23 @@ import { myContext } from "../contexto/contexto"
 
 const NavBar = () => {
 
-    let usuario
-    let {administrador, totalAgregado} = useContext(myContext)
-    administrador == true ? usuario = "Administrador" : usuario = "Cliente"
+    let {administrador, totalAgregado, usuario, fileName} = useContext(myContext)
+    let fileSrc = `http://localhost:8080/public/avatares/${fileName}`
+
+    fetch("http://localhost:8080/api/usuarios/session")
+        .then(res => res.json())
+        .then(json => console.log(json))
+        .catch(err => console.log(err))
 
     if (administrador == true){
         return (
             <Navbar variant="dark" bg="dark" expand="lg">
                 <Container>
-                    <Navbar.Brand id="tipoUsuario">{usuario}</Navbar.Brand>
+                    <div id="contenedorAvatar">
+                        <img id="avatar" src={fileSrc}></img>
+                        <span id="tipoUsuario">{usuario} <a>[Desloguear]</a></span>
+                    </div>
+                    {/* <Navbar.Brand id="tipoUsuario">{usuario}</Navbar.Brand> */}
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
@@ -41,7 +49,11 @@ const NavBar = () => {
         return (
             <Navbar variant="dark" bg="dark" expand="lg">
                 <Container>
-                    <Navbar.Brand id="tipoUsuario">{usuario}</Navbar.Brand>
+                    <div id="contenedorAvatar">
+                        <img id="avatar" src={fileSrc}></img>
+                        <span id="tipoUsuario">{usuario} <a>[Desloguear]</a></span>
+                    </div>
+                    {/* <Navbar.Brand id="tipoUsuario">{usuario}</Navbar.Brand> */}
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">

@@ -13,14 +13,14 @@ const App = () => {
     return (
         <BrowserRouter>
             <MyContextProvider>
-            <NavBar/>
-            <Switch>
-                <Route path="/" component={SeleccionUsuario} exact/>
-                <Route path="/productos" component={ItemListContainer} />
-                <Route path="/producto/:id" component={ItemDetailContainer} />
-                <Route path="/nuevo-producto" component={CargaProductos} />
-                <Route path="/carrito" component={Carrito} />
-            </Switch>
+                <NavBar/>
+                <Switch>
+                    <Route path="/" component={SeleccionUsuario} exact/>
+                    <Route path="/productos" component={ItemListContainer} />
+                    <Route path="/producto/:id" component={ItemDetailContainer} />
+                    <Route path="/nuevo-producto" component={CargaProductos} />
+                    <Route path="/carrito" component={Carrito} />
+                </Switch>
             </MyContextProvider>
         </BrowserRouter>
     )
