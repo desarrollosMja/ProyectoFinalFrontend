@@ -8,7 +8,7 @@ const CargaProductos = () => {
 
     const contexto = useContext(myContext)
 
-    const URL = `http://localhost:8080/api/productos`
+    const URL = `http://localhost:8080/api/products`
 
     return (
         <Form method="post" action={URL}>

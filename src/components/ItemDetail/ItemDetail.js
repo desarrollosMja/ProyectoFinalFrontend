@@ -6,9 +6,7 @@ import "./ItemDetail.css"
 
 const ItemDetail = (props) => {
 
-    console.log(props)
     const {nombre, descripcion, codigo, urlFoto, precio, stock} = props.item
-    console.log(props.item)
 
     const contexto = useContext(myContext)
 

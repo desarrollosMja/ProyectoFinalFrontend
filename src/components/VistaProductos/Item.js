@@ -15,8 +15,9 @@ const Item = (props) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const { _id, nombre, descripcion, codigo, urlFoto, precio, stock } = props.item
-    const URL = `http://localhost:8080/api/productos/${_id}`
+    /*elminar el identificador "id" cuando vuelva a usar DB*/
+    const { id: _id, nombre, descripcion, codigo, urlFoto, precio, stock } = props.item
+    const URL = `http://localhost:8080/api/products/${_id}`
 
     const contexto = useContext(myContext)
     const administrador = contexto.administrador
@@ -34,7 +35,7 @@ const Item = (props) => {
     );
 
     const borrarItem = () => {
-        fetch(`http://localhost:8080/api/productos/${_id}`, { 
+        fetch(`http://localhost:8080/api/products/${_id}`, { 
             method: 'DELETE', 
             headers: {'Content-Type': 'application/json'}, 
             body: JSON.stringify({administrador})

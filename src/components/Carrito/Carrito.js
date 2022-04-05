@@ -54,12 +54,13 @@ const Carrito = () => {
                 <Form hidden={true} id="formularioBusquedaCarrito" onSubmit={(e) => {
                     e.preventDefault()
                     const id = document.getElementById("idCarritoIngresado").value
-                    fetch(`http://localhost:8080/api/carrito/${id}/productos`)
+                    fetch(`http://localhost:8080/api/carts/${id}/products`)
                     .then(response => response.json())
                     .then(json => {
                         console.log(json)
                         let data = []
-                        for (const item of json.item) {
+                        /*Cambiar "json.items" a "json.item" cuando vuelva a DB*/
+                        for (const item of json.items) {
                             data.push({item: item})
                         }
                         let cantidadAgregadaAlCarrito = 0
@@ -107,9 +108,10 @@ const Carrito = () => {
                                         overlay={renderTooltipDelete}
                                     >
                                     <i class="bi bi-trash" onClick={() => {
-                                            removeItem(producto.item._id)
+                                        /*Cuando vuelva a usar DB cambiar el "id" por "_id"*/
+                                            removeItem(producto.item.id)
                                             if (carrito.length > 0){
-                                                fetch(`http://localhost:8080/api/carrito/${idCarrito}/productos/${producto.item._id}`, {
+                                                fetch(`http://localhost:8080/api/carts/${idCarrito}/products/${producto.item.id}`, {
                                                     method: "delete", 
                                                     headers: {'Content-Type': 'application/json'}, 
                                                     body: JSON.stringify({item: producto.item})
@@ -129,7 +131,8 @@ const Carrito = () => {
                                         <i class="bi bi-bag-plus" onClick={() => {
                                             setTotalAgregado(++totalAgregado)
                                             producto.item.addedToCart++
-                                            fetch(`http://localhost:8080/api/carrito/${idCarrito}/${producto.item._id}`, {
+                                            //Cuando vuelva a usar DB cambiar el "id" por "_id"
+                                            fetch(`http://localhost:8080/api/carts/${idCarrito}/${producto.item.id}`, {
                                                 method: "post", 
                                                 headers: {'Content-Type': 'application/json'}, 
                                                 body: JSON.stringify({item: producto.item})

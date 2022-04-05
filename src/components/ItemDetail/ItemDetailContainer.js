@@ -5,13 +5,13 @@ import ItemDetail from "./ItemDetail"
 const ItemDetailContainer = () => {
 
     const parametros = useParams()
-
     const [producto, setProducto] = useState({})
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/productos/${parametros.id}`)
+        fetch(`http://localhost:8080/api/products/${parametros.id}`)
             .then(res => res.json())
-            .then(json => setProducto(json))
+            /*Cuando vuelva a usar DB hay que eliminar el "[0]" porque lo que se recibe no es un array*/
+            .then(json => setProducto(json[0]))
             .catch(err => console.log(err))
     },[parametros])
 
