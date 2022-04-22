@@ -15,8 +15,7 @@ const Item = (props) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    /*elminar el identificador "id" cuando vuelva a usar DB*/
-    const { id: _id, nombre, descripcion, codigo, urlFoto, precio, stock } = props.item
+    const { _id, nombre, descripcion, codigo, urlFoto, precio, stock } = props.item
     const URL = `http://localhost:8080/api/products/${_id}`
 
     const contexto = useContext(myContext)
