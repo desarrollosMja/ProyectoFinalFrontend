@@ -1,0 +1,12 @@
+#prefijo-telefonico-container{
+    display: flex;
+    flex-direction: row;
+}
+
+#prefijo-telefonico-select{
+    width: 250px;
+}
+
+#prefijo-telefonico-input{
+    margin-left: 10px;
+}

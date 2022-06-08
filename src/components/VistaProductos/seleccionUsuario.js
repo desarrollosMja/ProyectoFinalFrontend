@@ -1,3 +1,5 @@
+import "./seleccionUsuario.css"
+import prefijos from "../../assets/json/prefijos-telefonicos.json"
 import { useState, useContext, useRef } from "react"
 import { useHistory } from "react-router"
 import { myContext } from "../contexto/contexto"
@@ -11,7 +13,7 @@ import Alert from "react-bootstrap/Alert"
 import pathParse from "path-parse"
 
 export default function SeleccionUsuario(){
-    
+
     const [show, setShow] = useState(true);
     const [showAlert, setShowAlert] = useState(false);
     const [showAlertFoto, setShowAlertFoto] = useState(false)
@@ -25,6 +27,7 @@ export default function SeleccionUsuario(){
     let inputRegistroEmail = useRef(null);
     let inputRegistroPassword = useRef(null);
     let inputRegistroDireccion = useRef(null);
+    let inputRegistroPrefijo = useRef(null);
     let inputRegistroTelefono = useRef(null);
     let inputRegistroFoto = useRef(null);
     let inputRegistroAdministrador = useRef(null);
@@ -50,6 +53,7 @@ export default function SeleccionUsuario(){
                 if (json == null){
                     setShowAlert(true)
                 } else{
+                    sessionStorage.setItem("user", json.email)
                     contextoUsuario.setUsuario(json.nombre)
                     contextoFileName.setFileName(json.foto)
                     if (json.administrador == false){
@@ -57,7 +61,7 @@ export default function SeleccionUsuario(){
                     } else {
                         contextoAdministrador.setAdministrador(true)
                     }
-                    history.push("/productos")
+                    history.push(`/productos/${json._id}`)
                 }
             })
             .catch(err => console.log(err))
@@ -71,7 +75,7 @@ export default function SeleccionUsuario(){
         const tipoUsuario = inputRegistroAdministrador.current.checked ? "si" : "no"
 
         let path = pathParse(files[0].name);
-        let fileName = pathParse.base
+
         if(path.ext !== '.png' && path.ext !== '.jpg' && path.ext !== '.gif' && path.ext !== '.jpeg') {
             setShowAlertFoto(true)
         } else{
@@ -93,15 +97,17 @@ export default function SeleccionUsuario(){
                 email: inputRegistroEmail.current.value,
                 password: inputRegistroPassword.current.value,
                 direccion: inputRegistroDireccion.current.value,
+                prefijo: inputRegistroPrefijo.current.value,
                 telefono: inputRegistroTelefono.current.value,
-                foto: fileName,
+                foto: files[0].name,
                 tipoUsuario: tipoUsuario
             })
         })
             .then(res => res.json())
             .then(json => {
+                sessionStorage.setItem("user", json.email)
                 contextoUsuario.setUsuario(json.nombre)
-                contextoFileName.setFileName(fileName)
+                contextoFileName.setFileName(files[0].name)
                 if (json.administrador == false){
                     contextoAdministrador.setAdministrador(false)
                 } else {
@@ -184,7 +190,14 @@ export default function SeleccionUsuario(){
                                 
                                 <Form.Group className="mb-3" controlId="formGridPhone">
                                     <Form.Label>Teléfono</Form.Label>
-                                    <Form.Control name="telefono" placeholder="+5411...." type="number" ref={inputRegistroTelefono}/>
+                                    <Form.Group className="mb-3" id="prefijo-telefonico-container">
+                                        <Form.Select aria-label="Default select example" id="prefijo-telefonico-select" name="prefijo" ref={inputRegistroPrefijo}>
+                                            {prefijos.map(elem => {
+                                                return <option key={elem.iso3} value={elem.phone_code}>{elem.nombre} (+{elem.phone_code})</option>
+                                            })}
+                                        </Form.Select>
+                                        <Form.Control id="prefijo-telefonico-input" name="telefono" placeholder="" type="number" ref={inputRegistroTelefono}/>
+                                    </Form.Group>
                                 </Form.Group>
 
                                 <Form.Group controlId="formFile" className="mb-3">
@@ -208,10 +221,6 @@ export default function SeleccionUsuario(){
                     </Row>
                 </Container>
             </Modal.Body>
-
-            {/* <Modal.Footer>
-                <Button variant="primary" onClick={() => guardarUsuario()}>Continuar</Button>
-            </Modal.Footer> */}
         </Modal>
     )
 }

@@ -4,18 +4,13 @@ import Nav from "react-bootstrap/Nav"
 import Badge from "react-bootstrap/Badge"
 import { NavLink } from "react-router-dom"
 import "./NavBar.css"
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
 import { myContext } from "../contexto/contexto"
 
 const NavBar = () => {
 
     let {administrador, totalAgregado, usuario, fileName} = useContext(myContext)
     let fileSrc = `http://localhost:8080/public/avatares/${fileName}`
-
-    fetch("http://localhost:8080/api/usuarios/session")
-        .then(res => res.json())
-        .then(json => console.log(json))
-        .catch(err => console.log(err))
 
     if (administrador == true){
         return (
