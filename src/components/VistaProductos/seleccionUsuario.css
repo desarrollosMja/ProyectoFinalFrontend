@@ -10,3 +10,9 @@
 #prefijo-telefonico-input{
     margin-left: 10px;
 }
+
+#spinner{
+    position: absolute;
+    left: 50%;
+    top: 40vh;
+}

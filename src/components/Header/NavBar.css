@@ -7,6 +7,10 @@
     font-size: 14px;
 }
 
+#btnDesloguear{
+    cursor: pointer;
+}
+
 .bi-basket3{
     padding: 10px;
     border: solid 1px #fff;

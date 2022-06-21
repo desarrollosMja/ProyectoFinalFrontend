@@ -2,15 +2,21 @@ import Navbar from "react-bootstrap/Navbar"
 import Container from "react-bootstrap/Container"
 import Nav from "react-bootstrap/Nav"
 import Badge from "react-bootstrap/Badge"
-import { NavLink } from "react-router-dom"
+import { NavLink, useHistory } from "react-router-dom"
 import "./NavBar.css"
 import { useContext } from "react"
 import { myContext } from "../contexto/contexto"
 
 const NavBar = () => {
+    const history = useHistory()
 
     let {administrador, totalAgregado, usuario, fileName} = useContext(myContext)
     let fileSrc = `http://localhost:8080/public/avatares/${fileName}`
+
+    function desloguear(){
+        sessionStorage.removeItem("token")
+        history.push("/")
+    }
 
     if (administrador == true){
         return (
@@ -18,7 +24,7 @@ const NavBar = () => {
                 <Container>
                     <div id="contenedorAvatar">
                         <img id="avatar" src={fileSrc}></img>
-                        <span id="tipoUsuario">{usuario} <a>[Desloguear]</a></span>
+                        <span id="tipoUsuario">{usuario} <a id="btnDesloguear" onClick={desloguear}>[Desloguear]</a></span>
                     </div>
                     {/* <Navbar.Brand id="tipoUsuario">{usuario}</Navbar.Brand> */}
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -46,7 +52,7 @@ const NavBar = () => {
                 <Container>
                     <div id="contenedorAvatar">
                         <img id="avatar" src={fileSrc}></img>
-                        <span id="tipoUsuario">{usuario} <a>[Desloguear]</a></span>
+                        <span id="tipoUsuario">{usuario} <a id="btnDesloguear" onClick={desloguear}>[Desloguear]</a></span>
                     </div>
                     {/* <Navbar.Brand id="tipoUsuario">{usuario}</Navbar.Brand> */}
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />

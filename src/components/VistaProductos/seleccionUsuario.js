@@ -1,6 +1,6 @@
 import "./seleccionUsuario.css"
 import prefijos from "../../assets/json/prefijos-telefonicos.json"
-import { useState, useContext, useRef } from "react"
+import { useState, useContext, useRef, useEffect } from "react"
 import { useHistory } from "react-router"
 import { myContext } from "../contexto/contexto"
 import Modal from "react-bootstrap/Modal"
@@ -10,6 +10,7 @@ import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/esm/Col"
 import Container from "react-bootstrap/esm/Container"
 import Alert from "react-bootstrap/Alert"
+import Spinner from "react-bootstrap/Spinner"
 import pathParse from "path-parse"
 
 export default function SeleccionUsuario(){
@@ -20,6 +21,7 @@ export default function SeleccionUsuario(){
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [fullscreen, setFullscreen] = useState(true);
+    const [showSpinner, setShowSpinner] = useState(false)
     let inputEmail = useRef(null);
     let inputPass = useRef(null);
     let inputRegistroNombre = useRef(null);
@@ -33,14 +35,14 @@ export default function SeleccionUsuario(){
     let inputRegistroAdministrador = useRef(null);
     let inputRegistroCliente = useRef(null);
 
-    let contextoAdministrador = useContext(myContext)
-    let contextoUsuario = useContext(myContext)
-    let contextoFileName = useContext(myContext)
+    let contexto = useContext(myContext)
 
     let history = useHistory()
+    const token = sessionStorage.getItem("token")
 
     function login(e){
         e.preventDefault()
+        setShowSpinner(true)
         fetch("http://localhost:8080/api/usuarios", {
             method: "POST",
             headers: {
@@ -50,18 +52,20 @@ export default function SeleccionUsuario(){
         })
             .then(res => res.json())
             .then(json => {
-                if (json == null){
+                console.log(json)
+                if (json.token == null){
                     setShowAlert(true)
+                    setShowSpinner(false)
                 } else{
-                    sessionStorage.setItem("user", json.email)
-                    contextoUsuario.setUsuario(json.nombre)
-                    contextoFileName.setFileName(json.foto)
-                    if (json.administrador == false){
-                        contextoAdministrador.setAdministrador(false)
+                    sessionStorage.setItem("token", `bearer ${json.token}`)
+                    contexto.setUsuario(json.user.nombre)
+                    contexto.setFileName(json.user.foto)
+                    if (json.user.administrador == false){
+                        contexto.setAdministrador(false)
                     } else {
-                        contextoAdministrador.setAdministrador(true)
+                        contexto.setAdministrador(true)
                     }
-                    history.push(`/productos/${json._id}`)
+                    history.push(`/productos/${json.user._id}`)
                 }
             })
             .catch(err => console.log(err))
@@ -69,6 +73,7 @@ export default function SeleccionUsuario(){
 
     function registro(e){
         e.preventDefault()
+        setShowSpinner(true)
         const files = inputRegistroFoto.current.files
         const formData = new FormData()
         formData.append('foto', files[0])
@@ -105,20 +110,40 @@ export default function SeleccionUsuario(){
         })
             .then(res => res.json())
             .then(json => {
-                sessionStorage.setItem("user", json.email)
-                contextoUsuario.setUsuario(json.nombre)
-                contextoFileName.setFileName(files[0].name)
-                if (json.administrador == false){
-                    contextoAdministrador.setAdministrador(false)
+                sessionStorage.setItem("token", `bearer ${json.token}`)
+                contexto.setUsuario(json.user.nombre)
+                contexto.setFileName(files[0].name)
+                if (json.user.administrador == false){
+                    contexto.setAdministrador(false)
                 } else {
-                    contextoAdministrador.setAdministrador(true)
+                    contexto.setAdministrador(true)
                 }
                 history.push("/productos")
             })
             .catch(err => console.log(err))
         }
-
     }
+
+    useEffect(() => {
+        if (token != undefined){
+            fetch(`http://localhost:8080/api/usuarios/verify-token`, {
+                headers: {
+                    authorization: token
+                }
+            })
+                .then(res => res.json())
+                .then(json => {
+                    if (json.session == false) sessionStorage.removeItem("token")
+                    if (json.session == true){
+                        contexto.setUsuario(json.user.nombre)
+                        contexto.setFileName(json.user.foto)
+                    contexto.setAdministrador(json.user.administrador)
+                        history.push(`/productos/${json.user.id}`)
+                    }
+                })
+                .catch(err => console.log(err))
+            }
+    },[token])
 
     return (
         <Modal
@@ -133,6 +158,7 @@ export default function SeleccionUsuario(){
             </Modal.Header>
 
             <Modal.Body>
+                {showSpinner == true && <Spinner animation="grow" variant="dark" id="spinner"/>}
                 <Container fluid>
                     <Row>
                         <Col xs={4} id="divLogin" className="bordeSoft m-2 p-4">
