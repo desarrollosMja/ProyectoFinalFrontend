@@ -19,7 +19,7 @@ const App = () => {
                     <Route path="/productos/:userId?" component={ItemListContainer} />
                     <Route path="/producto/:id" component={ItemDetailContainer} />
                     <Route path="/nuevo-producto" component={CargaProductos} />
-                    <Route path="/carrito" component={Carrito} />
+                    <Route path="/carrito/:userId?" component={Carrito} />
                 </Switch>
             </MyContextProvider>
         </BrowserRouter>

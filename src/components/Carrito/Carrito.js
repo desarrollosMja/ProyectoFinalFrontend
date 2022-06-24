@@ -1,12 +1,14 @@
 import "./carrito.css"
 import { useContext, useEffect, useState } from "react"
-import { useHistory } from "react-router"
+import { useHistory, useParams } from "react-router"
 import { myContext } from "../contexto/contexto"
 import Table from 'react-bootstrap/Table'
 import Button from "react-bootstrap/Button"
 import Tooltip from "react-bootstrap/esm/Tooltip"
 import OverlayTrigger from "react-bootstrap/esm/OverlayTrigger"
 import Form from "react-bootstrap/Form"
+import Spinner from "react-bootstrap/Spinner"
+import Swal from 'sweetalert2'
 
 const Carrito = () => {
 
@@ -18,11 +20,28 @@ const Carrito = () => {
         removeItem, 
         clearCart, 
         totalAgregado, 
-        setTotalAgregado
+        setTotalAgregado,
+        userId,
+        setUserId,
+        userEmail,
+        setUserEmail,
+        usuario,
+        setAdministrador,
+        setFileName,
+        setUsuario
     } = useContext(myContext)
 
+    const token = sessionStorage.getItem("token")
     const history = useHistory()
     const [open, setOpen] = useState(false);
+    const [showSpinner, setShowSpinner] = useState(false)
+    const params = useParams()
+    const userObj = {
+        nombre: usuario,
+        email: userEmail
+    }
+
+    if (params.userId != undefined) setUserId(params.userId)
 
     const renderTooltipDelete = (props) => (
         <Tooltip id="button-tooltip" {...props}>
@@ -36,9 +55,63 @@ const Carrito = () => {
         </Tooltip>
     );
 
+    const comprar = () => {
+        setShowSpinner(true)
+        const total_a_pagar = carrito.reduce((acc, item) => acc + item.item.precio * item.item.addedToCart, 0)
+        fetch(`http://localhost:8080/api/carts/new-operation`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({carrito: carrito, user: userObj, total: total_a_pagar}),
+            mode: "cors"
+        })
+            .then(res => res.json())
+            .then(json => {
+                if (json.success == true) {
+                    setShowSpinner(false)
+                    Swal.fire({
+                        title: 'Orden enviada con éxito!',
+                        icon: 'success',
+                        confirmButtonText: 'Ok',
+                        confirmButtonColor: "green"
+                    })
+                        .then(res => {
+                            if (res.isConfirmed == true) {
+                                clearCart()
+                                history.push(`/productos/${userId}`)
+                            }
+                        })
+                        .catch(err => console.log(err))
+                }
+            })
+            .catch(err => console.log(err))
+    }
+
     useEffect(() => {
         setCarrito(carrito)
-    } , [carrito])
+
+        setInterval(() => {
+            window.location.reload()
+        }, 300000)
+
+        fetch(`http://localhost:8080/api/usuarios/verify-token`, {
+            headers: {
+                authorization: token
+            }
+        })
+        .then(res => res.json())
+        .then(json => {
+            if (json.session == false) history.push("/")
+            if (json.session == true){
+                setUsuario(json.user.nombre)
+                setUserEmail(json.user.email)
+                setFileName(json.user.foto)
+                setAdministrador(json.user.administrador)
+            }
+        })
+        .catch(err => console.log(err))
+    } , [carrito,token])
 
 
     if (carrito.length == 0) {
@@ -83,6 +156,7 @@ const Carrito = () => {
     } else {
         return (
             <div className="contenedorFlex">
+                {showSpinner == true && <Spinner animation="grow" variant="dark" id="spinner"/>}
                 <Table >
                     <thead>
                         <tr>
@@ -144,7 +218,7 @@ const Carrito = () => {
                 </Table>
                 <div id="contenedorFinalizarCompra">
                     <h5>TOTAL: $ {carrito.reduce((acc, item) => acc + item.item.precio * item.item.addedToCart, 0)}</h5>
-                    <Button variant="success" className="btn-finalizar">Finalizar compra</Button>
+                    <Button variant="success" className="btn-finalizar" onClick={comprar}>Finalizar compra</Button>
                     <Button variant="danger" className="btn-vaciar" onClick={() => {
                         clearCart()
                     }}>

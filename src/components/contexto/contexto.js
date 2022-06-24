@@ -12,6 +12,8 @@ export const MyContextProvider = ({ children }) => {
     let [idCarrito, setIdCarrito] = useState()
     let [usuario, setUsuario] = useState()
     let [fileName, setFileName] = useState()
+    let [userId, setUserId] = useState()
+    let [userEmail, setUserEmail] = useState()
 
     let arrayAuxiliar = []
 
@@ -94,7 +96,11 @@ export const MyContextProvider = ({ children }) => {
         usuario: usuario,
         setUsuario: setUsuario,
         fileName: fileName,
-        setFileName: setFileName
+        setFileName: setFileName,
+        userId: userId,
+        setUserId: setUserId,
+        userEmail: userEmail,
+        setUserEmail: setUserEmail
     }
 
     useEffect(() => {

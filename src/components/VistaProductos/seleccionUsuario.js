@@ -59,6 +59,7 @@ export default function SeleccionUsuario(){
                 } else{
                     sessionStorage.setItem("token", `bearer ${json.token}`)
                     contexto.setUsuario(json.user.nombre)
+                    contexto.setUserEmail(json.user.email)
                     contexto.setFileName(json.user.foto)
                     if (json.user.administrador == false){
                         contexto.setAdministrador(false)
@@ -112,6 +113,7 @@ export default function SeleccionUsuario(){
             .then(json => {
                 sessionStorage.setItem("token", `bearer ${json.token}`)
                 contexto.setUsuario(json.user.nombre)
+                contexto.setUserEmail(json.user.email)
                 contexto.setFileName(files[0].name)
                 if (json.user.administrador == false){
                     contexto.setAdministrador(false)

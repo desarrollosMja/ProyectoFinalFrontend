@@ -10,7 +10,7 @@ import { myContext } from "../contexto/contexto"
 const NavBar = () => {
     const history = useHistory()
 
-    let {administrador, totalAgregado, usuario, fileName} = useContext(myContext)
+    let {administrador, totalAgregado, usuario, fileName, userId} = useContext(myContext)
     let fileSrc = `http://localhost:8080/public/avatares/${fileName}`
 
     function desloguear(){
@@ -30,9 +30,9 @@ const NavBar = () => {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <NavLink className="nav-link" to={"/productos"}>Productos</NavLink>
+                            <NavLink className="nav-link" to={`/productos/${userId}`}>Productos</NavLink>
                             <NavLink className="nav-link" to={"/nuevo-producto"}>Cargar Producto</NavLink>
-                            <NavLink className="nav-link" to={"/carrito"}>
+                            <NavLink className="nav-link" to={`/carrito/${userId}`}>
                                 <i class="bi bi-basket3">
                                     <Badge 
                                         bg="transparent" 
@@ -58,8 +58,8 @@ const NavBar = () => {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <NavLink className="nav-link" to={"/productos"}>Productos</NavLink>
-                            <NavLink className="nav-link" to={"/carrito"}>
+                            <NavLink className="nav-link" to={`/productos/${userId}`}>Productos</NavLink>
+                            <NavLink className="nav-link" to={`/carrito/${userId}`}>
                                 <i class="bi bi-basket3">
                                     <Badge 
                                         bg="transparent" 
