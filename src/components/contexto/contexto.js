@@ -14,6 +14,7 @@ export const MyContextProvider = ({ children }) => {
     let [fileName, setFileName] = useState()
     let [userId, setUserId] = useState()
     let [userEmail, setUserEmail] = useState()
+    let [userPhone, setUserPhone] = useState()
 
     let arrayAuxiliar = []
 
@@ -100,7 +101,9 @@ export const MyContextProvider = ({ children }) => {
         userId: userId,
         setUserId: setUserId,
         userEmail: userEmail,
-        setUserEmail: setUserEmail
+        setUserEmail: setUserEmail,
+        userPhone: userPhone, 
+        setUserPhone: setUserPhone
     }
 
     useEffect(() => {

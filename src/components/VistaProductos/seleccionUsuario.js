@@ -52,7 +52,6 @@ export default function SeleccionUsuario(){
         })
             .then(res => res.json())
             .then(json => {
-                console.log(json)
                 if (json.token == null){
                     setShowAlert(true)
                     setShowSpinner(false)
@@ -61,6 +60,7 @@ export default function SeleccionUsuario(){
                     contexto.setUsuario(json.user.nombre)
                     contexto.setUserEmail(json.user.email)
                     contexto.setFileName(json.user.foto)
+                    contexto.setUserPhone(`+${json.user.prefijo}${json.user.telefono}`)
                     if (json.user.administrador == false){
                         contexto.setAdministrador(false)
                     } else {
@@ -115,6 +115,7 @@ export default function SeleccionUsuario(){
                 contexto.setUsuario(json.user.nombre)
                 contexto.setUserEmail(json.user.email)
                 contexto.setFileName(files[0].name)
+                contexto.setUserPhone(`+${json.user.prefijo}${json.user.telefono}`)
                 if (json.user.administrador == false){
                     contexto.setAdministrador(false)
                 } else {

@@ -28,7 +28,9 @@ const Carrito = () => {
         usuario,
         setAdministrador,
         setFileName,
-        setUsuario
+        setUsuario,
+        userPhone,
+        setUserPhone
     } = useContext(myContext)
 
     const token = sessionStorage.getItem("token")
@@ -38,7 +40,8 @@ const Carrito = () => {
     const params = useParams()
     const userObj = {
         nombre: usuario,
-        email: userEmail
+        email: userEmail,
+        telefono: userPhone
     }
 
     if (params.userId != undefined) setUserId(params.userId)
@@ -108,6 +111,7 @@ const Carrito = () => {
                 setUserEmail(json.user.email)
                 setFileName(json.user.foto)
                 setAdministrador(json.user.administrador)
+                setUserPhone(`+${json.user.prefijo}${json.user.telefono}`)
             }
         })
         .catch(err => console.log(err))

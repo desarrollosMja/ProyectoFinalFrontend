@@ -29,6 +29,7 @@ const ItemListContainer = () => {
                 contexto.setUserEmail(json.user.email)
                 contexto.setFileName(json.user.foto)
                 contexto.setAdministrador(json.user.administrador)
+                contexto.setUserPhone(`+${json.user.prefijo}${json.user.telefono}`)
             }
         })
         .catch(err => console.log(err))
