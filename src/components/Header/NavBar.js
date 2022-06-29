@@ -6,12 +6,13 @@ import { NavLink, useHistory } from "react-router-dom"
 import "./NavBar.css"
 import { useContext } from "react"
 import { myContext } from "../contexto/contexto"
+import config from "../../config"
 
 const NavBar = () => {
     const history = useHistory()
 
     let {administrador, totalAgregado, usuario, fileName, userId} = useContext(myContext)
-    let fileSrc = `http://localhost:8080/public/avatares/${fileName}`
+    let fileSrc = `http://${config.BACK_URI}/public/avatares/${fileName}`
 
     function desloguear(){
         sessionStorage.removeItem("token")

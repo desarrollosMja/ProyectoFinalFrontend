@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react"
 import ItemList from "./ItemList"
 import { myContext } from "../contexto/contexto"
 import { useHistory, useParams } from "react-router"
+import config from "../../config"
 
 const ItemListContainer = () => {
     const contexto = useContext(myContext)
@@ -16,7 +17,7 @@ const ItemListContainer = () => {
             window.location.reload()
         }, 300000)
 
-        fetch(`http://localhost:8080/api/usuarios/verify-token`, {
+        fetch(`http://${config.BACK_URI}/api/usuarios/verify-token`, {
             headers: {
                 authorization: token
             }

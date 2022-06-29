@@ -12,6 +12,7 @@ import Container from "react-bootstrap/esm/Container"
 import Alert from "react-bootstrap/Alert"
 import Spinner from "react-bootstrap/Spinner"
 import pathParse from "path-parse"
+import config from "../../config"
 
 export default function SeleccionUsuario(){
 
@@ -43,7 +44,7 @@ export default function SeleccionUsuario(){
     function login(e){
         e.preventDefault()
         setShowSpinner(true)
-        fetch("http://localhost:8080/api/usuarios", {
+        fetch(`http://${config.BACK_URI}/api/usuarios`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -85,14 +86,14 @@ export default function SeleccionUsuario(){
         if(path.ext !== '.png' && path.ext !== '.jpg' && path.ext !== '.gif' && path.ext !== '.jpeg') {
             setShowAlertFoto(true)
         } else{
-            fetch("http://localhost:8080/api/usuarios/guardar-foto", {
+            fetch(`http://${config.BACK_URI}/api/usuarios/guardar-foto`, {
             method: "POST",
             body: formData
         })
             .then(res => res.json())
             .catch(err => console.log("Error en el front: ", err))
 
-        fetch("http://localhost:8080/api/usuarios/nuevo", {
+        fetch(`http://${config.BACK_URI}/api/usuarios/nuevo`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -129,7 +130,7 @@ export default function SeleccionUsuario(){
 
     useEffect(() => {
         if (token != undefined){
-            fetch(`http://localhost:8080/api/usuarios/verify-token`, {
+            fetch(`http://${config.BACK_URI}/api/usuarios/verify-token`, {
                 headers: {
                     authorization: token
                 }

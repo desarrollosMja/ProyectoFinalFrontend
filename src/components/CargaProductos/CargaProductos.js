@@ -3,12 +3,13 @@ import Button from "react-bootstrap/Button"
 import "./cargaProductos.css"
 import { useContext } from "react"
 import { myContext } from "../contexto/contexto"
+import config from "../../config"
 
 const CargaProductos = () => {
 
     const contexto = useContext(myContext)
 
-    const URL = `http://localhost:8080/api/products`
+    const URL = `http://${config.BACK_URI}/api/products`
 
     return (
         <Form method="post" action={URL}>

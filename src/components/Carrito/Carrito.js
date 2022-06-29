@@ -9,6 +9,7 @@ import OverlayTrigger from "react-bootstrap/esm/OverlayTrigger"
 import Form from "react-bootstrap/Form"
 import Spinner from "react-bootstrap/Spinner"
 import Swal from 'sweetalert2'
+import config from "../../config"
 
 const Carrito = () => {
 
@@ -61,7 +62,7 @@ const Carrito = () => {
     const comprar = () => {
         setShowSpinner(true)
         const total_a_pagar = carrito.reduce((acc, item) => acc + item.item.precio * item.item.addedToCart, 0)
-        fetch(`http://localhost:8080/api/carts/new-operation`, {
+        fetch(`http://${config.BACK_URI}/api/carts/new-operation`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -98,7 +99,7 @@ const Carrito = () => {
             window.location.reload()
         }, 300000)
 
-        fetch(`http://localhost:8080/api/usuarios/verify-token`, {
+        fetch(`http://${config.BACK_URI}/api/usuarios/verify-token`, {
             headers: {
                 authorization: token
             }
@@ -131,7 +132,7 @@ const Carrito = () => {
                 <Form hidden={true} id="formularioBusquedaCarrito" onSubmit={(e) => {
                     e.preventDefault()
                     const id = document.getElementById("idCarritoIngresado").value
-                    fetch(`http://localhost:8080/api/carts/${id}/products`)
+                    fetch(`http://${config.BACK_URI}/api/carts/${id}/products`)
                     .then(response => response.json())
                     .then(json => {
                         console.log(json)
@@ -187,7 +188,7 @@ const Carrito = () => {
                                     <i class="bi bi-trash" onClick={() => {
                                             removeItem(producto.item._id)
                                             if (carrito.length > 0){
-                                                fetch(`http://localhost:8080/api/carts/${idCarrito}/products/${producto.item._id}`, {
+                                                fetch(`http://${config.BACK_URI}/api/carts/${idCarrito}/products/${producto.item._id}`, {
                                                     method: "delete", 
                                                     headers: {'Content-Type': 'application/json'}, 
                                                     body: JSON.stringify({item: producto.item})
@@ -207,7 +208,7 @@ const Carrito = () => {
                                         <i class="bi bi-bag-plus" onClick={() => {
                                             setTotalAgregado(++totalAgregado)
                                             producto.item.addedToCart++
-                                            fetch(`http://localhost:8080/api/carts/${idCarrito}/${producto.item._id}`, {
+                                            fetch(`http://${config.BACK_URI}/api/carts/${idCarrito}/${producto.item._id}`, {
                                                 method: "post", 
                                                 headers: {'Content-Type': 'application/json'}, 
                                                 body: JSON.stringify({item: producto.item})

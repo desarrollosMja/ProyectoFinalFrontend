@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom"
 import { useContext, useState } from "react"
 import { myContext } from "../contexto/contexto"
 import axios from "axios"
+import config from "../../config"
 
 const Item = (props) => {
 
@@ -16,7 +17,7 @@ const Item = (props) => {
     const handleShow = () => setShow(true);
 
     const { _id, nombre, descripcion, codigo, urlFoto, precio, stock } = props.item
-    const URL = `http://localhost:8080/api/products/${_id}`
+    const URL = `http://${config.BACK_URI}/api/products/${_id}`
 
     const contexto = useContext(myContext)
     const administrador = contexto.administrador
@@ -34,7 +35,7 @@ const Item = (props) => {
     );
 
     const borrarItem = () => {
-        fetch(`http://localhost:8080/api/products/${_id}`, { 
+        fetch(`http://${config.BACK_URI}/api/products/${_id}`, { 
             method: 'DELETE', 
             headers: {'Content-Type': 'application/json'}, 
             body: JSON.stringify({administrador})

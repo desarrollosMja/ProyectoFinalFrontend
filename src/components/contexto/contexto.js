@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import config from "../../config"
 export const myContext = createContext()
 const { Provider } = myContext
 
@@ -24,7 +25,7 @@ export const MyContextProvider = ({ children }) => {
                 if (producto.item._id == item._id) {
                     producto.item.addedToCart++
                     const itemAux = producto.item
-                    fetch(`http://localhost:8080/api/carts/${idCarrito}/${producto.item._id}`, {
+                    fetch(`http://${config.BACK_URI}/api/carts/${idCarrito}/${producto.item._id}`, {
                         method: "post", 
                         headers: {'Content-Type': 'application/json'}, 
                         body: JSON.stringify({itemAux})
@@ -42,12 +43,12 @@ export const MyContextProvider = ({ children }) => {
         }
 
         if (idCarrito == undefined) {
-            fetch("http://localhost:8080/api/carts", {method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify({item})})
+            fetch(`http://${config.BACK_URI}/api/carts`, {method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify({item})})
                 .then(res => res.json())
                 .then(json => setIdCarrito(json.idCarrito))
                 .catch(err => console.log(err))
         } else{
-            fetch(`http://localhost:8080/api/carts/${idCarrito}/products`, {method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify({item})})
+            fetch(`http://${config.BACK_URI}/api/carts/${idCarrito}/products`, {method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify({item})})
         }
     }
 
@@ -68,7 +69,7 @@ export const MyContextProvider = ({ children }) => {
         setTotalAgregado(0)
         setIdCarrito(undefined)
         setCarrito([])
-        await fetch(`http://localhost:8080/api/carts/${idCarrito}`, {
+        await fetch(`http://${config.BACK_URI}/api/carts/${idCarrito}`, {
             method: "delete", 
             headers: {'Content-Type': 'application/json'}, 
             body: JSON.stringify({carrito})
@@ -107,7 +108,7 @@ export const MyContextProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/products")
+        fetch(`http://${config.BACK_URI}/api/products`)
             .then(res => res.json())
             .then(json => setProductos(json))
             .catch(err => console.log(err))
