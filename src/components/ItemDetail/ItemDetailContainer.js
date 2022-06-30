@@ -9,7 +9,7 @@ const ItemDetailContainer = () => {
     const [producto, setProducto] = useState({})
 
     useEffect(() => {
-        fetch(`http://${config.BACK_URI}/api/products/${parametros.id}`)
+        fetch(`${config.PROTOCOL}://${config.BACK_URI}/api/products/${parametros.id}`)
             .then(res => res.json())
             .then(json => setProducto(json))
             .catch(err => console.log(err))

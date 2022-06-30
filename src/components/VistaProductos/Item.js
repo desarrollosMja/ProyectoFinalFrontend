@@ -17,7 +17,7 @@ const Item = (props) => {
     const handleShow = () => setShow(true);
 
     const { _id, nombre, descripcion, codigo, urlFoto, precio, stock } = props.item
-    const URL = `http://${config.BACK_URI}/api/products/${_id}`
+    const URL = `${config.PROTOCOL}://${config.BACK_URI}/api/products/${_id}`
 
     const contexto = useContext(myContext)
     const administrador = contexto.administrador
@@ -35,7 +35,7 @@ const Item = (props) => {
     );
 
     const borrarItem = () => {
-        fetch(`http://${config.BACK_URI}/api/products/${_id}`, { 
+        fetch(`${config.PROTOCOL}://${config.BACK_URI}/api/products/${_id}`, { 
             method: 'DELETE', 
             headers: {'Content-Type': 'application/json'}, 
             body: JSON.stringify({administrador})

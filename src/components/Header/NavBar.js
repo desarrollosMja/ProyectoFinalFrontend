@@ -12,7 +12,7 @@ const NavBar = () => {
     const history = useHistory()
 
     let {administrador, totalAgregado, usuario, fileName, userId} = useContext(myContext)
-    let fileSrc = `http://${config.BACK_URI}/public/avatares/${fileName}`
+    let fileSrc = `${config.PROTOCOL}://${config.BACK_URI}/public/avatares/${fileName}`
 
     function desloguear(){
         sessionStorage.removeItem("token")

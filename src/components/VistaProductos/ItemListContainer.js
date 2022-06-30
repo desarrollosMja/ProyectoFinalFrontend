@@ -17,7 +17,7 @@ const ItemListContainer = () => {
             window.location.reload()
         }, 300000)
 
-        fetch(`http://${config.BACK_URI}/api/usuarios/verify-token`, {
+        fetch(`${config.PROTOCOL}://${config.BACK_URI}/api/usuarios/verify-token`, {
             headers: {
                 authorization: token
             }

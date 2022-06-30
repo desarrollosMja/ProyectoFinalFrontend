@@ -44,7 +44,7 @@ export default function SeleccionUsuario(){
     function login(e){
         e.preventDefault()
         setShowSpinner(true)
-        fetch(`http://${config.BACK_URI}/api/usuarios`, {
+        fetch(`${config.PROTOCOL}://${config.BACK_URI}/api/usuarios`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -86,14 +86,14 @@ export default function SeleccionUsuario(){
         if(path.ext !== '.png' && path.ext !== '.jpg' && path.ext !== '.gif' && path.ext !== '.jpeg') {
             setShowAlertFoto(true)
         } else{
-            fetch(`http://${config.BACK_URI}/api/usuarios/guardar-foto`, {
+            fetch(`${config.PROTOCOL}://${config.BACK_URI}/api/usuarios/guardar-foto`, {
             method: "POST",
             body: formData
         })
             .then(res => res.json())
             .catch(err => console.log("Error en el front: ", err))
 
-        fetch(`http://${config.BACK_URI}/api/usuarios/nuevo`, {
+        fetch(`${config.PROTOCOL}://${config.BACK_URI}/api/usuarios/nuevo`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -130,7 +130,7 @@ export default function SeleccionUsuario(){
 
     useEffect(() => {
         if (token != undefined){
-            fetch(`http://${config.BACK_URI}/api/usuarios/verify-token`, {
+            fetch(`${config.PROTOCOL}://${config.BACK_URI}/api/usuarios/verify-token`, {
                 headers: {
                     authorization: token
                 }

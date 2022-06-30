@@ -62,7 +62,7 @@ const Carrito = () => {
     const comprar = () => {
         setShowSpinner(true)
         const total_a_pagar = carrito.reduce((acc, item) => acc + item.item.precio * item.item.addedToCart, 0)
-        fetch(`http://${config.BACK_URI}/api/carts/new-operation`, {
+        fetch(`${config.PROTOCOL}://${config.BACK_URI}/api/carts/new-operation`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -99,7 +99,7 @@ const Carrito = () => {
             window.location.reload()
         }, 300000)
 
-        fetch(`http://${config.BACK_URI}/api/usuarios/verify-token`, {
+        fetch(`${config.PROTOCOL}://${config.BACK_URI}/api/usuarios/verify-token`, {
             headers: {
                 authorization: token
             }
@@ -132,7 +132,7 @@ const Carrito = () => {
                 <Form hidden={true} id="formularioBusquedaCarrito" onSubmit={(e) => {
                     e.preventDefault()
                     const id = document.getElementById("idCarritoIngresado").value
-                    fetch(`http://${config.BACK_URI}/api/carts/${id}/products`)
+                    fetch(`${config.PROTOCOL}://${config.BACK_URI}/api/carts/${id}/products`)
                     .then(response => response.json())
                     .then(json => {
                         console.log(json)
@@ -188,7 +188,7 @@ const Carrito = () => {
                                     <i class="bi bi-trash" onClick={() => {
                                             removeItem(producto.item._id)
                                             if (carrito.length > 0){
-                                                fetch(`http://${config.BACK_URI}/api/carts/${idCarrito}/products/${producto.item._id}`, {
+                                                fetch(`${config.PROTOCOL}://${config.BACK_URI}/api/carts/${idCarrito}/products/${producto.item._id}`, {
                                                     method: "delete", 
                                                     headers: {'Content-Type': 'application/json'}, 
                                                     body: JSON.stringify({item: producto.item})
@@ -208,7 +208,7 @@ const Carrito = () => {
                                         <i class="bi bi-bag-plus" onClick={() => {
                                             setTotalAgregado(++totalAgregado)
                                             producto.item.addedToCart++
-                                            fetch(`http://${config.BACK_URI}/api/carts/${idCarrito}/${producto.item._id}`, {
+                                            fetch(`${config.PROTOCOL}://${config.BACK_URI}/api/carts/${idCarrito}/${producto.item._id}`, {
                                                 method: "post", 
                                                 headers: {'Content-Type': 'application/json'}, 
                                                 body: JSON.stringify({item: producto.item})

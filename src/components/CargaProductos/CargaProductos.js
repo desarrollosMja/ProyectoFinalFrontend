@@ -9,7 +9,7 @@ const CargaProductos = () => {
 
     const contexto = useContext(myContext)
 
-    const URL = `http://${config.BACK_URI}/api/products`
+    const URL = `${config.PROTOCOL}://${config.BACK_URI}/api/products`
 
     return (
         <Form method="post" action={URL}>
