@@ -112,7 +112,7 @@ export const MyContextProvider = ({ children }) => {
             .then(res => res.json())
             .then(json => setProductos(json))
             .catch(err => console.log(err))
-    },[])
+    },[config])
 
     return (
         <Provider value={valorDelContexto}>

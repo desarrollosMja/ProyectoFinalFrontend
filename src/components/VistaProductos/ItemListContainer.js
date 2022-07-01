@@ -34,7 +34,7 @@ const ItemListContainer = () => {
             }
         })
         .catch(err => console.log(err))
-    },[token,config])
+    },[token,config,history])
 
     return (
         <ItemList items={contexto.productos} />

@@ -92,6 +92,6 @@ window.env = {
   "npm_command": "start",
   "INIT_CWD": "/home/drkos/Curso-Backend-CoderHouse/PROYECTO FINAL/front/ecommerce",
   "EDITOR": "vi",
-  "BACK_URI": "localhost:8080",
-  "PROTOCOL": "http"
+  "REACT_APP_BACK_URI": "localhost:8080",
+  "REACT_APP_PROTOCOL": "http"
 };
