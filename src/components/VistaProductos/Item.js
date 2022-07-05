@@ -4,6 +4,7 @@ import Tooltip from 'react-bootstrap/Tooltip'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import Form from 'react-bootstrap/Form'
+import Placeholder from "react-bootstrap/Placeholder"
 import { NavLink } from "react-router-dom"
 import { useContext, useState } from "react"
 import { myContext } from "../contexto/contexto"
@@ -95,6 +96,7 @@ const Item = (props) => {
                         <Button variant="dark" id="btnModificarItem" onClick={handleShow}><i class="bi bi-gear"></i></Button>
                     </OverlayTrigger>
                 </Card>
+
                 <Offcanvas show={show} onHide={handleClose}>
                     <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Modificar artículo</Offcanvas.Title>
