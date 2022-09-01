@@ -18,6 +18,7 @@ export default function SeleccionUsuario(){
 
     const [show, setShow] = useState(true);
     const [showAlert, setShowAlert] = useState(false);
+    const [showAlertNewUser, setShowAlertNewUser] = useState(false)
     const [showAlertFoto, setShowAlertFoto] = useState(false)
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -112,11 +113,18 @@ export default function SeleccionUsuario(){
         })
             .then(res => res.json())
             .then(json => {
+                if (json.error){
+                    setShowSpinner(false)
+                    setShowAlertNewUser(true)
+                    return
+                }
+
                 sessionStorage.setItem("token", `bearer ${json.token}`)
                 contexto.setUsuario(json.user.nombre)
                 contexto.setUserEmail(json.user.email)
                 contexto.setFileName(files[0].name)
                 contexto.setUserPhone(`+${json.user.prefijo}${json.user.telefono}`)
+                
                 if (json.user.administrador == false){
                     contexto.setAdministrador(false)
                 } else {
@@ -246,6 +254,10 @@ export default function SeleccionUsuario(){
                                 <Button variant="success" type="submit" onClick={e => registro(e)}>
                                     Guardar
                                 </Button>
+
+                                <Alert variant="danger" show={showAlertNewUser}>
+                                       ¡Email ya registrado!
+                                </Alert>
                             </Form>
                         </Col>
                     </Row>
